@@ -1,0 +1,19 @@
+{
+  "name": "focus-flow-api",
+  "version": 2,
+  "builds": [
+    {
+      "src": "focus-flow-api/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "focus-flow-api/index.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
