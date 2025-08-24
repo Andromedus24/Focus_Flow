@@ -1,0 +1,10 @@
+node_modules/
+focus-flow-api/node_modules/
+focus-flow-web/
+.git/
+.gitignore
+README.md
+*.log
+.env
+.env.local
+.env.production
