@@ -1,5 +1,6 @@
 node_modules/
 focus-flow-api/node_modules/
+focus-flow-api/playground/
 focus-flow-web/
 .git/
 .gitignore
@@ -8,3 +9,4 @@ README.md
 .env
 .env.local
 .env.production
+.vercel/
