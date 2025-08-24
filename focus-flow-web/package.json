@@ -1,0 +1,35 @@
+{
+  "name": "focus-flow-web",
+  "version": "1.0.0",
+  "description": "Focus Flow - AI-powered Chrome extension for productivity and focus",
+  "main": "background.js",
+  "scripts": {
+    "build": "echo 'Chrome extension - no build step required'",
+    "test": "echo 'Chrome extension - test in browser'",
+    "package": "zip -r focus-flow-extension.zip . -x 'node_modules/*' '*.git*' 'README.md' 'package.json' 'package-lock.json'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "productivity",
+    "focus",
+    "ai",
+    "distraction-blocking",
+    "pomodoro",
+    "task-management"
+  ],
+  "author": "Ronak Prabhu",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/focus-flow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/focus-flow/issues"
+  },
+  "homepage": "https://github.com/yourusername/focus-flow#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
