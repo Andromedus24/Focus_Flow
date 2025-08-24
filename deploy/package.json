@@ -1,0 +1,17 @@
+{
+	"name": "focus-flow-api",
+	"version": "1.0.0",
+	"description": "Focus Flow API - AI-powered productivity tool backend",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"author": "Ronak Prabhu",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.21.1",
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.5"
+	}
+}
