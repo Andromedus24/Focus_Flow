@@ -1,5 +1,5 @@
 {
-	"name": "lockin-api",
+	"name": "focus-flow-api",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -7,7 +7,7 @@
 	"scripts": {
 		"test": "nodemon index.js"
 	},
-	"author": "Hemesh Chadalavada",
+	"author": "Ronak Prabhu",
 	"license": "ISC",
 	"dependencies": {
 		"@huggingface/transformers": "^3.0.1",

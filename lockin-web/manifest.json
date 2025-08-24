@@ -1,6 +1,6 @@
 {
 	"manifest_version": 3,
-	"name": "LockIn",
+	"name": "Focus Flow",
 	"description": "An AI-powered productivity tool that helps you stay focused and organized.",
 	"icons": {
 		"16": "files/assets/images/monkey-face-icon.png",
