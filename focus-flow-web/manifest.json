@@ -1,37 +1,145 @@
 {
 	"manifest_version": 3,
-	"name": "Focus Flow",
-	"description": "An AI-powered productivity tool that helps you stay focused and organized.",
+	"name": "Focus Flow - AI-Powered Productivity",
+	"description": "An intelligent AI-powered productivity tool that helps you stay focused, manage tasks, and block distractions using advanced machine learning.",
+	"version": "1.0.0",
+	"author": "Ronak Prabhu",
+	"homepage_url": "https://github.com/yourusername/focus-flow",
+	
 	"icons": {
 		"16": "files/assets/images/monkey-face-icon.png",
+		"32": "files/assets/images/monkey-face-icon.png",
 		"48": "files/assets/images/monkey-face-icon.png",
+		"64": "files/assets/images/monkey-face-icon.png",
 		"128": "files/assets/images/monkey-face-icon.png"
 	},
-	"version": "0.1",
+	
 	"action": {
 		"default_popup": "files/dashboard.html",
+		"default_title": "Focus Flow - Boost Your Productivity",
 		"default_icon": {
 			"16": "files/assets/images/monkey-face-icon.png",
+			"32": "files/assets/images/monkey-face-icon.png",
 			"48": "files/assets/images/monkey-face-icon.png",
 			"128": "files/assets/images/monkey-face-icon.png"
 		}
 	},
-	"permissions": ["tabs", "webNavigation", "activeTab", "storage"],
-	"host_permissions": ["<all_urls>"],
+	
+	"permissions": [
+		"tabs",
+		"webNavigation",
+		"activeTab",
+		"storage",
+		"alarms",
+		"notifications",
+		"webRequest"
+	],
+	
+	"host_permissions": [
+		"<all_urls>",
+		"http://localhost:3000/*",
+		"https://*.openai.com/*",
+		"https://*.huggingface.co/*"
+	],
+	
 	"chrome_url_overrides": {
 		"newtab": "files/dashboard.html"
 	},
+	
 	"background": {
 		"service_worker": "background.js",
 		"type": "module"
 	},
-	"content_security_policy": {
-		"extension_pages": "script-src 'self'; object-src 'self'"
-	},
+	
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["files/content-script.js"],
+			"run_at": "document_end",
+			"all_frames": false
+		}
+	],
+	
 	"web_accessible_resources": [
 		{
-			"resources": ["assets/css/*.css", "assets/css/*.map"],
+			"resources": [
+				"files/assets/css/*.css",
+				"files/assets/css/*.map",
+				"files/assets/js/*.js",
+				"files/assets/images/*.png",
+				"files/assets/images/*.jpeg",
+				"files/assets/images/*.jpg"
+			],
 			"matches": ["<all_urls>"]
 		}
-	]
+	],
+	
+	"content_security_policy": {
+		"extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; worker-src 'self'"
+	},
+	
+	"options_page": "files/settings.html",
+	
+	"commands": {
+		"_execute_action": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+F",
+				"mac": "Command+Shift+F"
+			},
+			"description": "Open Focus Flow Dashboard"
+		},
+		"start-focus-session": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+S",
+				"mac": "Command+Shift+S"
+			},
+			"description": "Start a new focus session"
+		},
+		"stop-focus-session": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+X",
+				"mac": "Command+Shift+X"
+			},
+			"description": "Stop current focus session"
+		}
+	},
+	
+	"externally_connectable": {
+		"matches": [
+			"http://localhost:3000/*",
+			"https://*.vercel.app/*"
+		]
+	},
+	
+	"minimum_chrome_version": "88",
+	
+	"incognito": "split",
+	
+	"offline_enabled": true,
+	
+	"update_url": "https://clients2.google.com/service/update2/crx",
+	
+	"short_name": "Focus Flow",
+	
+	"theme_color": "#6366f1",
+	
+	"background_color": "#ffffff",
+	
+	"display": "standalone",
+	
+	"orientation": "portrait-primary",
+	
+	"scope": "/",
+	
+	"start_url": "/",
+	
+	"categories": [
+		"productivity",
+		"utilities",
+		"education"
+	],
+	
+	"lang": "en",
+	
+	"default_locale": "en"
 }
