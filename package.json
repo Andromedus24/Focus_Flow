@@ -1,0 +1,67 @@
+{
+  "name": "focus-flow",
+  "version": "1.0.0",
+  "description": "AI-powered productivity Chrome extension with intelligent website blocking and focus management",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "cd focus-flow-api && npm run dev",
+    "dev:web": "cd focus-flow-web && npm run build",
+    "build": "npm run build:api && npm run build:web",
+    "build:api": "cd focus-flow-api && npm run build",
+    "build:web": "cd focus-flow-web && npm run build",
+    "test": "npm run test:api && npm run test:web",
+    "test:api": "cd focus-flow-api && npm test",
+    "test:web": "cd focus-flow-web && npm test",
+    "install:all": "npm install && cd focus-flow-api && npm install && cd ../focus-flow-web && npm install",
+    "clean": "rm -rf node_modules focus-flow-api/node_modules focus-flow-web/node_modules",
+    "lint": "npm run lint:api && npm run lint:web",
+    "lint:api": "cd focus-flow-api && npm run lint",
+    "lint:web": "cd focus-flow-web && npm run lint",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,html,css}\"",
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "productivity",
+    "chrome-extension",
+    "ai",
+    "focus",
+    "distraction-blocking",
+    "pomodoro",
+    "task-management",
+    "machine-learning"
+  ],
+  "author": "Ronak Prabhu",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/focus-flow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/focus-flow/issues"
+  },
+  "homepage": "https://github.com/yourusername/focus-flow#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,html,css}": [
+      "prettier --write"
+    ]
+  },
+  "workspaces": [
+    "focus-flow-api",
+    "focus-flow-web"
+  ]
+}

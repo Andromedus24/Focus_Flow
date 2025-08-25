@@ -1,50 +1,292 @@
-## Inspiration
+# 🚀 Focus Flow - AI-Powered Productivity Chrome Extension
 
-There is an ever-increasing need to improve productivity, focus, and efficiency in our day-to-day tasks, which is why we created Focus Flow.
+An intelligent Chrome extension that helps you stay focused and productive using advanced AI technology to block distractions and manage your tasks effectively.
 
-- Distractions are everywhere, making it difficult for individuals to stay focused on their goals and tasks.
-- Traditional browsers offer no support in combating this issue, leading to wasted time and decreased productivity due to unrelated content.
+![Focus Flow](https://img.shields.io/badge/Focus%20Flow-v1.0.0-blue)
+![License](https://img.shields.io/badge/License-ISC-green)
+![Node.js](https://img.shields.io/badge/Node.js-18+-orange)
+![Chrome](https://img.shields.io/badge/Chrome-88+-yellow)
 
-## What it does
+## ✨ Features
 
-Focus Flow is an AI-powered Chrome extension that simply helps you get things done:
+### 🎯 **AI-Powered Focus Management**
+- **Intelligent Website Blocking**: Uses Hugging Face embeddings and OpenAI GPT-4 to determine website relevance
+- **Smart Task Analysis**: Automatically generates task-specific website recommendations
+- **Context-Aware Filtering**: Considers your current goal when evaluating website relevance
 
-- Focus Flow assists you in defining clear, achievable tasks for each session.
-- Focus Flow uses AI to identify and block distracting websites unrelated to your goals, keeping you fully in the zone.
-- Focus Flow saves URLs of blocked sites so you can explore them later—after you're done with your goals.
-- With an integrated timer, customizable to-do list, and calendar sync, Focus Flow is the all-in-one productivity workspace.
+### ⏰ **Advanced Timer & Pomodoro**
+- **Flexible Focus Sessions**: Customizable duration from 10 minutes to 3 hours
+- **Automatic Break Management**: Intelligent break reminders and session progression
+- **Progress Tracking**: Visual progress bars and session analytics
 
-## How we built it
+### 📊 **Productivity Analytics**
+- **Comprehensive Tracking**: Monitor focus time, completed tasks, and productivity scores
+- **Visual Insights**: Beautiful charts and progress indicators
+- **Historical Data**: Track your productivity trends over time
 
-To make sure Focus Flow blocks only real distractions and keeps useful websites accessible, we created a three-layered filtering system in the backend.
+### 🛡️ **Distraction Blocking**
+- **Multi-Layer Protection**: Essential websites, task-specific sites, and AI analysis
+- **Real-Time Monitoring**: Instant website relevance checking during browsing
+- **Smart Whitelisting**: Learn from your preferences and adjust blocking rules
 
-First, we use a fine-tuned GPT-4o model to understand the user's specific task. We then generate a custom whitelist of URLs directly related to it, ensuring only relevant content gets through. Next, if the user is on a URL that isn't on the whitelist, we then use the all-MiniLM-L12-v2 embeddings model to generate vectors of the task and the current tab details to perform a cosine similarity check. Finally, fine-tuned GPT-4o/o1-mini models make real-time decisions on borderline cases.
+### 🎨 **Modern User Interface**
+- **Glass-Morphism Design**: Beautiful, modern UI with smooth animations
+- **Responsive Layout**: Works perfectly on all screen sizes
+- **Dark Mode Support**: Comfortable viewing in any lighting condition
 
-The backend, built with Node.js and Express, manages these steps smoothly, while the Chrome extension (using Manifest V3) keeps it easy and quick for the user to interact with. This setup helps Focus Flow keep users focused on what matters most without unnecessary distractions.
+## 🏗️ Architecture
 
-## Challenges we ran into
+```
+Focus Flow/
+├── focus-flow-api/          # Backend API server
+│   ├── controllers/         # API endpoint handlers
+│   ├── router.js           # API routing
+│   └── index.js            # Server entry point
+├── focus-flow-web/          # Chrome extension
+│   ├── files/              # Extension files
+│   │   ├── dashboard.html  # Main dashboard
+│   │   ├── timer.js        # Timer functionality
+│   │   └── content-script.js # Page-level features
+│   ├── background.js       # Extension background script
+│   └── manifest.json       # Extension configuration
+└── package.json            # Root project configuration
+```
 
-A big challenge was dealing with the restrictions of Chrome's Manifest V3, particularly in trying to access the tab data securely. We also faced limitations with Chrome's local storage features — when implementing a timer that constantly updates and stores data in local storage without performance issues. We also faced several bugs while trying to communicate with the data on background.js.
+## 🚀 Quick Start
 
-Building the cosine similarity system was interesting, too. Using all-minilm-l12-v2 to generate vectors and then building a cosine similarity function to compare vectors of tab data and user tasks with proper threshold adjustments were tough tasks to deal with in 24 hours. Initially, we were integrating Google Calendar tasks, and syncing was also a big challenge.
+### Prerequisites
+- Node.js 18.0.0 or higher
+- Chrome browser 88 or higher
+- OpenAI API key
 
-## Accomplishments that we're proud of
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/focus-flow.git
+cd focus-flow
+```
 
-We built a complete three-filter system that identifies unrelated content and restricts it for the user within a specific time frame. This is significant because all blockers currently in the market are hardcoded and use static data for URL blocking.
+### 2. Install Dependencies
+```bash
+npm run install:all
+```
 
-We combined the use of LLMs, embedding models, and cosine similarity to create a nuanced decision-making tree. This is fascinating since we are applying it beyond the traditional use of LLMs for content generation. We also achieved very high response times for blocking—it operates smoothly and does not cause any delays or disruptions to a user's regular workflow.
+### 3. Set Up Environment Variables
+Create a `.env` file in the `focus-flow-api` directory:
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+PORT=3000
+NODE_ENV=development
+```
 
-## What we learned
+### 4. Start Development Servers
+```bash
+npm run dev
+```
 
-- Developing Backend-Heavy Chrome extensions on Manifest V3
-- Creating LLM Decision-Making Workflows
-- Methods for Optimizing Browser Development
-- Programs for Maintaining User Privacy
+This will start both the API server and the Chrome extension development environment.
 
-## What's next for Focus Flow
+### 5. Load Extension in Chrome
+1. Open Chrome and go to `chrome://extensions/`
+2. Enable "Developer mode"
+3. Click "Load unpacked" and select the `focus-flow-web` folder
+4. The Focus Flow extension will appear in your extensions list
 
-Focus Flow is a productivity and focus tool designed for navigating the overwhelming distractions of today's information age. Looking ahead, we plan to improve the usage of our platform by introducing social features to create a sense of accountability. We will also develop in-depth analytics and progress tracking to help users understand their productivity patterns better. Finally, we hope to create a mobile app that allows users to maintain their focus and productivity anytime, anywhere.
+## 🛠️ Development
 
-## About the Developer
+### Available Scripts
 
-Focus Flow was developed by **Ronak Prabhu**, a passionate developer focused on creating tools that enhance productivity and help users achieve their goals in an increasingly distracting digital world.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start both API and web development servers |
+| `npm run dev:api` | Start only the API server |
+| `npm run dev:web` | Build the Chrome extension |
+| `npm run build` | Build both API and web components |
+| `npm run test` | Run all tests |
+| `npm run lint` | Run linting on all code |
+| `npm run format` | Format all code with Prettier |
+
+### Project Structure
+
+#### Backend API (`focus-flow-api/`)
+- **Express.js server** with ES modules
+- **AI integration** with Hugging Face and OpenAI
+- **Security middleware** with Helmet.js and CORS
+- **Comprehensive error handling** and validation
+- **Logging and monitoring** with Morgan
+
+#### Chrome Extension (`focus-flow-web/`)
+- **Modern UI** with Tailwind CSS and Flowbite
+- **Content scripts** for page-level productivity tracking
+- **Background service worker** for extension management
+- **Local storage** for data persistence
+- **Chrome APIs** integration for browser functionality
+
+## 🔧 Configuration
+
+### API Configuration
+The API can be configured through environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Server port | 3000 |
+| `NODE_ENV` | Environment mode | development |
+| `OPENAI_API_KEY` | OpenAI API key | Required |
+| `ALLOWED_ORIGINS` | CORS origins | localhost, chrome-extension |
+
+### Extension Configuration
+The Chrome extension can be configured through the manifest.json file and includes:
+- **Permissions**: tabs, storage, notifications, alarms
+- **Content scripts**: Page-level productivity tracking
+- **Background scripts**: Extension lifecycle management
+- **Keyboard shortcuts**: Quick access to features
+
+## 📚 API Documentation
+
+### Endpoints
+
+#### Health Check
+```http
+GET /health
+```
+
+#### Check Website Relevance
+```http
+POST /api/check
+Content-Type: application/json
+
+{
+  "titleTab": "GitHub - username/repository",
+  "goalNeeded": "Complete project documentation",
+  "URLTab": "https://github.com/username/repository"
+}
+```
+
+#### Generate Task Websites
+```http
+POST /api/initial
+Content-Type: application/json
+
+{
+  "taskGoal": "Learn React.js fundamentals",
+  "context": "Beginner developer"
+}
+```
+
+For complete API documentation, see [API README](focus-flow-api/README.md).
+
+## 🧪 Testing
+
+### Running Tests
+```bash
+# Run all tests
+npm test
+
+# Run API tests only
+npm run test:api
+
+# Run extension tests only
+npm run test:web
+```
+
+### Test Configuration
+The project includes comprehensive test configurations:
+- **API testing** with test scenarios and utilities
+- **Extension testing** with Chrome extension testing framework
+- **Performance testing** with response time thresholds
+- **Integration testing** between API and extension
+
+## 🚀 Deployment
+
+### API Deployment
+The API can be deployed to various platforms:
+
+#### Vercel (Recommended)
+```bash
+cd focus-flow-api
+vercel --prod
+```
+
+#### Docker
+```bash
+docker build -t focus-flow-api .
+docker run -p 3000:3000 focus-flow-api
+```
+
+### Extension Deployment
+1. Build the extension: `npm run build:web`
+2. Package the extension: `npm run package:web`
+3. Upload to Chrome Web Store or distribute manually
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and commit: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+### Code Style
+- Use ES6+ features
+- Follow ESLint configuration
+- Format code with Prettier
+- Write comprehensive tests
+- Document new features
+
+## 📄 License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **OpenAI** for providing GPT-4 API access
+- **Hugging Face** for open-source AI models
+- **Chrome Extensions Team** for the excellent extension platform
+- **Tailwind CSS** for the beautiful UI framework
+
+## 🆘 Support
+
+### Getting Help
+- 📖 [Documentation](docs/)
+- 🐛 [Issue Tracker](https://github.com/yourusername/focus-flow/issues)
+- 💬 [Discussions](https://github.com/yourusername/focus-flow/discussions)
+- 📧 [Email Support](mailto:support@focusflow.com)
+
+### Common Issues
+- **Extension not loading**: Check Chrome version and developer mode
+- **API errors**: Verify OpenAI API key and server status
+- **Website blocking issues**: Check CORS configuration and permissions
+
+## 🔄 Changelog
+
+### v1.0.0 (Current)
+- 🎉 Initial release
+- 🚀 AI-powered website relevance checking
+- ⏰ Advanced timer and Pomodoro technique
+- 📊 Comprehensive productivity analytics
+- 🎨 Modern glass-morphism UI design
+- 🛡️ Multi-layer distraction blocking
+- 📱 Responsive design for all devices
+- 🔧 Comprehensive configuration options
+
+### Upcoming Features
+- 🔐 User authentication and sync
+- 📈 Advanced analytics and insights
+- 🤖 Machine learning model improvements
+- 🌐 Cross-browser support
+- 📱 Mobile app companion
+
+## 📊 Project Status
+
+![GitHub last commit](https://img.shields.io/github/last-commit/yourusername/focus-flow)
+![GitHub issues](https://img.shields.io/github/issues/yourusername/focus-flow)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/focus-flow)
+![GitHub contributors](https://img.shields.io/github/contributors/yourusername/focus-flow)
+
+---
+
+**Made with ❤️ by [Ronak Prabhu](https://github.com/yourusername)**
+
+*Transform your productivity with AI-powered focus management*
