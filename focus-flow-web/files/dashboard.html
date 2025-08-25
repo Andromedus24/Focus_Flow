@@ -5,33 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Time to Focus Flow!</title>
+    <title>Focus Flow - Productivity Dashboard</title>
     <link rel="icon" href="./assets/images/monkey-face-icon.png" type="image/x-icon">
 
     <link href="./assets/css/flowbite.min.css" rel="stylesheet">
     <script src="./assets/css/tailwind.min.css" rel="stylesheet"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f7ff 0%, #fff5f5 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-
             background-image: url('./assets/images/saturn-bg.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
         }
 
         :root {
             font-size: 16px;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            line-height: 1.5;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .text-4xl {
@@ -51,70 +51,101 @@
         }
 
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .completed {
             text-decoration: line-through;
             color: #9ca3af;
+            opacity: 0.6;
         }
 
         .task-item {
             transition: all 0.2s ease;
+            border-left: 4px solid transparent;
         }
 
         .task-item:hover {
-            background-color: #f3f4f6;
+            background-color: #f8fafc;
+            border-left-color: #6366f1;
+        }
+
+        .task-item.completed {
+            border-left-color: #10b981;
         }
 
         .custom-checkbox {
             appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #4f46e5;
-            border-radius: 6px;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #6366f1;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .custom-checkbox:checked {
-            background-color: #4f46e5;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='24px' height='24px'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
-            background-size: 14px;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #6366f1;
+            border-color: #6366f1;
+        }
+
+        .custom-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
         }
 
         .delete-btn {
             opacity: 0;
             transition: all 0.2s ease;
+            background: #ef4444;
+            color: white;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 12px;
         }
 
         .task-item:hover .delete-btn {
             opacity: 1;
         }
 
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
         .custom-scrollbar {
             scrollbar-width: thin;
-            scrollbar-color: #4f46e5 #f3f4f6;
+            scrollbar-color: #6366f1 #f1f5f9;
         }
 
         .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f3f4f6;
+            background: #f1f5f9;
+            border-radius: 4px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #6366f1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background-color: #4f46e5;
-            border-radius: 3px;
         }
 
         /* Modal Styles */
@@ -127,198 +158,428 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
             padding-top: 60px;
         }
 
         .modal-content {
-            background-color: #fefefe;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
             margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 10px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
 
         .close {
-            color: #aaa;
+            color: #6b7280;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
         }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        .close:hover {
+            color: #374151;
         }
 
         .subtle-button {
-            background-color: transparent;
-            color: #4f46e5;
-            border: 1px solid #4f46e5;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.4);
         }
 
         .subtle-button:hover {
-            background-color: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px 0 rgba(99, 102, 241, 0.5);
+        }
+
+        .productivity-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dasharray 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .focus-mode {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             color: white;
+        }
+
+        .focus-mode .glass-card {
+            background: rgba(30, 41, 59, 0.9);
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #ef4444;
+        }
+
+        .notification.warning {
+            background: #f59e0b;
         }
     </style>
 </head>
 
 <body class="p-4 md:p-8">
 
-    <!-- Input-->
-    <div class="max-w-4xl mx-auto bg-white/95 p-6 md:p-8 rounded-2xl shadow-xl backdrop-blur-sm">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <div>
-                <h1 class="text-4xl font-bold text-indigo-900 mb-2">🐵 Hello, Ronak!</h1>
+    <!-- Notification System -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Main Dashboard -->
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <!-- Header Section -->
+        <div class="glass-card p-6 md:p-8 rounded-3xl shadow-2xl">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                        🚀 Focus Flow
+                    </h1>
+                    <p class="text-gray-600 text-lg">Boost your productivity with AI-powered focus</p>
+                </div>
+                <div class="flex gap-3">
+                    <button id="saved-links-btn" class="subtle-button">
+                        📚 Saved Links
+                    </button>
+                    <button id="settings-btn" class="subtle-button">
+                        ⚙️ Settings
+                    </button>
+                </div>
             </div>
-            <button id="saved-links-btn" class="subtle-button">
-                Saved URLs
-            </button>
+
+            <!-- Quick Stats -->
+            <div class="stats-grid mb-8">
+                <div class="stat-card">
+                    <div class="text-3xl font-bold text-indigo-600" id="total-focus-time">0h</div>
+                    <div class="text-gray-600">Total Focus Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-3xl font-bold text-green-600" id="tasks-completed">0</div>
+                    <div class="text-gray-600">Tasks Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-3xl font-bold text-purple-600" id="focus-sessions">0</div>
+                    <div class="text-gray-600">Focus Sessions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-3xl font-bold text-blue-600" id="productivity-score">85%</div>
+                    <div class="text-gray-600">Productivity Score</div>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <form>
-                <div class="flex gap-4 mb-4">
-                    <div class="w-full">
-                        <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">Select Focus
-                            Duration</label>
+        <!-- Focus Session Setup -->
+        <div class="glass-card p-6 md:p-8 rounded-3xl shadow-2xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">🎯 Start Your Focus Session</h2>
+            
+            <form id="focus-form">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="duration" class="block text-sm font-semibold text-gray-700 mb-3">Focus Duration</label>
                         <select id="duration" name="duration"
-                            class="duration-select w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700 transition-all duration-200">
+                            class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700 transition-all duration-200">
                             <option value="10">10 minutes</option>
-                            <option value="25" selected>25 minutes</option>
+                            <option value="25" selected>25 minutes (Pomodoro)</option>
                             <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
                             <option value="60">1 hour</option>
                             <option value="90">1 hour 30 minutes</option>
                             <option value="120">2 hours</option>
-                            <option value="150">2 hour 30 minutes</option>
-                            <option value="180">3 hours</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="break-duration" class="block text-sm font-semibold text-gray-700 mb-3">Break Duration</label>
+                        <select id="break-duration" name="break-duration"
+                            class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700 transition-all duration-200">
+                            <option value="5">5 minutes</option>
+                            <option value="10" selected>10 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="20">20 minutes</option>
                         </select>
                     </div>
                 </div>
 
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">What are you working on?</label>
+                    <textarea name="currentTask" id="currentTask" placeholder="Describe your current task or goal..."
+                        class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-32 resize-none text-gray-700 placeholder-gray-400 transition-all duration-200"></textarea>
+                </div>
 
-                <label class="block text-sm font-medium text-gray-700 mb-2">Enter Your Current Focus</label>
-                <textarea name="currentTask" id="currentTask" placeholder="What are you working on right now?"
-                    class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent h-32 resize-none text-gray-700 placeholder-gray-400 transition-all duration-200"></textarea>
-
-                <button id="startTaskButton"
-                    class="mt-4 w-full bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium shadow-md hover:shadow-lg">
-                    Time to Focus Flow!
-                </button>
-
+                <div class="flex gap-4">
+                    <button type="submit" id="startTaskButton"
+                        class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        🚀 Start Focus Session
+                    </button>
+                    <button type="button" id="quick-start-btn"
+                        class="px-8 py-4 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-semibold border-2 border-gray-200">
+                        ⚡ Quick Start
+                    </button>
+                </div>
             </form>
         </div>
 
-        <!-- To-do Section -->
-        <div class="mt-10">
-            <h2 class="text-2xl font-bold text-indigo-900 mb-4">To-do List</h2>
+        <!-- Task Management -->
+        <div class="glass-card p-6 md:p-8 rounded-3xl shadow-2xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">📋 Task Management</h2>
+            
             <div class="flex gap-3 mb-6">
-                <input id="todo-input" type="text" placeholder="Add a new task"
-                    class="flex-1 px-5 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
+                <input id="todo-input" type="text" placeholder="Add a new task..."
+                    class="flex-1 px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
                 <button id="add-todo-btn"
-                    class="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium shadow-md hover:shadow-lg">
-                    Add
+                    class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl">
+                    ➕ Add Task
                 </button>
             </div>
-            <ul id="todo-list" class="space-y-3 max-h-64 overflow-y-auto custom-scrollbar pr-2"></ul>
+            
+            <div class="flex gap-4 mb-4">
+                <button id="filter-all" class="filter-btn active px-4 py-2 rounded-lg font-medium transition-all duration-200">
+                    All Tasks
+                </button>
+                <button id="filter-pending" class="filter-btn px-4 py-2 rounded-lg font-medium transition-all duration-200">
+                    Pending
+                </button>
+                <button id="filter-completed" class="filter-btn px-4 py-2 rounded-lg font-medium transition-all duration-200">
+                    Completed
+                </button>
+            </div>
+            
+            <ul id="todo-list" class="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-2"></ul>
         </div>
 
-        <!-- Upcoming Events Section -->
-        <div class="mt-10">
-            <h2 class="text-2xl font-bold text-indigo-900 mb-4">Upcoming Events</h2>
-            <div class="space-y-3">
-                <div class="bg-indigo-50 p-5 rounded-xl card-hover">
-                    <div class="flex justify-between items-center">
+        <!-- Productivity Insights -->
+        <div class="glass-card p-6 md:p-8 rounded-3xl shadow-2xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Productivity Insights</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="productivity-card p-6 rounded-2xl">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Today's Progress</h3>
+                    <div class="flex items-center gap-4">
+                        <svg class="w-20 h-20" viewBox="0 0 36 36">
+                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="75, 100"/>
+                        </svg>
                         <div>
-                            <h3 class="text-gray-900 font-semibold mb-1">Meeting with Reginald DesRoches</h3>
-                            <p class="text-gray-600 text-sm">The Rice Memorial Center</p>
+                            <div class="text-3xl font-bold text-indigo-600">75%</div>
+                            <div class="text-gray-600">Daily Goal</div>
                         </div>
-                        <span class="text-indigo-600 font-medium">November 30, 1 PM</span>
                     </div>
                 </div>
-                <div class="bg-indigo-50 p-5 rounded-xl card-hover">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-gray-900 font-semibold mb-1">Flag Football Practice</h3>
-                            <p class="text-gray-600 text-sm">Field 6</p>
-                        </div>
-                        <span class="text-indigo-600 font-medium">November 30, 8 PM</span>
-                    </div>
-                </div>
-                <div class="bg-indigo-50 p-5 rounded-xl card-hover">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-gray-900 font-semibold mb-1">Meeting with Joshua Klinge</h3>
-                            <p class="text-gray-600 text-sm">Virtual Meeting</p>
-                        </div>
-                        <span class="text-indigo-600 font-medium">November 30, 8 AM</span>
+                
+                <div class="productivity-card p-6 rounded-2xl">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Focus Streak</h3>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-green-600">7</div>
+                        <div class="text-gray-600">Days in a row</div>
+                        <div class="text-sm text-gray-500 mt-2">🔥 Keep it up!</div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Upcoming Events -->
+        <div class="glass-card p-6 md:p-8 rounded-3xl shadow-2xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">📅 Upcoming Events</h2>
+            <div class="space-y-4">
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-2xl card-hover border border-indigo-100">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-gray-900 font-semibold mb-2">Team Standup Meeting</h3>
+                            <p class="text-gray-600 text-sm">Daily sync with development team</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-indigo-600 font-semibold">Today, 9:00 AM</span>
+                            <div class="text-sm text-gray-500">In 2 hours</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl card-hover border border-green-100">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-gray-900 font-semibold mb-2">Project Review</h3>
+                            <p class="text-gray-600 text-sm">Quarterly project assessment</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-green-600 font-semibold">Tomorrow, 2:00 PM</span>
+                            <div class="text-sm text-gray-500">Prepare presentation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <!-- Timer module -->
-    <div class="max-w-4xl mx-auto bg-white/95 p-6 md:p-8 rounded-2xl shadow-xl backdrop-blur-sm mt-10 hidden">
-
-        <div class="max-w-[100px] mx-auto mb-6">
-            <div class="aspect-square overflow-hidden rounded-xl">
-                <img src="./assets/images/monkey-face-icon.png" alt="Square image"
-                    class="h-full w-full object-cover hover:scale-105 transition-transform duration-300" />
-            </div>
-        </div>
-
-        <!-- Header Section -->
+    <!-- Focus Timer Module -->
+    <div id="focus-timer" class="max-w-4xl mx-auto glass-card p-6 md:p-8 rounded-3xl shadow-2xl mt-10 hidden focus-mode">
+        
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-indigo-900 mb-2">You are locked in!</h1>
-            <p class="text-gray-600" id="focus-task">Task: Write the FILM Paper on Frankenstein (1931)</p>
+            <div class="max-w-[120px] mx-auto mb-6">
+                <div class="aspect-square overflow-hidden rounded-2xl">
+                    <img src="./assets/images/monkey-face-icon.png" alt="Focus Mode" class="h-full w-full object-cover hover:scale-105 transition-transform duration-300" />
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold text-white mb-2">🚀 You're in the zone!</h1>
+            <p class="text-gray-200 text-lg" id="focus-task-display">Task: Write the FILM Paper on Frankenstein (1931)</p>
         </div>
 
-        <!-- Timer Section -->
+        <!-- Timer Display -->
         <div class="text-center mb-10">
-            <div class="timer-text text-8xl font-bold text-indigo-900 mb-8" id="timer">00:25:00</div>
+            <div class="timer-text text-8xl font-bold text-white mb-8" id="timer-display">00:25:00</div>
             <div class="flex justify-center gap-4">
-                <button id="stop-btn"
-                    class="px-8 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors duration-200 font-medium shadow-md hover:shadow-lg">
-                    Stop
+                <button id="pause-btn" class="px-8 py-4 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl">
+                    ⏸️ Pause
                 </button>
-                <button id="pause-btn"
-                    class="px-8 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors duration-200 font-medium shadow-md hover:shadow-lg">
-                    Pause
+                <button id="stop-btn" class="px-8 py-4 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl">
+                    ⏹️ Stop Session
                 </button>
             </div>
+        </div>
+
+        <!-- Session Progress -->
+        <div class="text-center mb-8">
+            <div class="w-full bg-gray-700 rounded-full h-3 mb-4">
+                <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p class="text-gray-300 text-sm">Session Progress</p>
         </div>
 
         <!-- Motivation Section -->
         <div class="text-center">
-            <p class="text-xl text-gray-700 italic">"Stay focused, stay driven."</p>
+            <p class="text-xl text-gray-300 italic mb-4">"Stay focused, stay driven, stay productive."</p>
+            <div class="flex justify-center gap-2">
+                <span class="text-yellow-400">⭐</span>
+                <span class="text-yellow-400">⭐</span>
+                <span class="text-yellow-400">⭐</span>
+                <span class="text-yellow-400">⭐</span>
+                <span class="text-yellow-400">⭐</span>
+            </div>
         </div>
     </div>
 
-    <!-- Saved links modal module -->
+    <!-- Saved Links Modal -->
     <div id="saved-links-modal" class="modal">
         <div class="modal-content">
             <span class="close" id="close-modal">&times;</span>
-            <h2 class="text-2xl font-bold text-indigo-900 mb-4">Saved Links</h2>
-            <ul id="saved-links-list" class="space-y-2">
-                <li><a href="https://example.com" target="_blank" class="text-blue-600 hover:underline">Example Link
-                        1</a></li>
-                <li><a href="https://example.com" target="_blank" class="text-blue-600 hover:underline">Example Link
-                        2</a></li>
-                <li><a href="https://example.com" target="_blank" class="text-blue-600 hover:underline">Example Link
-                        3</a></li>
-                <!-- Add more links as needed -->
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">📚 Saved Productivity Links</h2>
+            
+            <div class="mb-6">
+                <div class="flex gap-3">
+                    <input id="new-link-input" type="text" placeholder="Add new link..." class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button id="add-link-btn" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                        Add
+                    </button>
+                </div>
+            </div>
+            
+            <ul id="saved-links-list" class="space-y-3 max-h-96 overflow-y-auto custom-scrollbar">
+                <li class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <a href="https://notion.so" target="_blank" class="text-blue-600 hover:underline flex-1">Notion - All-in-one workspace</a>
+                    <button class="delete-link-btn text-red-500 hover:text-red-700 ml-2">🗑️</button>
+                </li>
+                <li class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <a href="https://trello.com" target="_blank" class="text-blue-600 hover:underline flex-1">Trello - Project management</a>
+                    <button class="delete-link-btn text-red-500 hover:text-red-700 ml-2">🗑️</button>
+                </li>
+                <li class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <a href="https://github.com" target="_blank" class="text-blue-600 hover:underline flex-1">GitHub - Code collaboration</a>
+                    <button class="delete-link-btn text-red-500 hover:text-red-700 ml-2">🗑️</button>
+                </li>
             </ul>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-settings-modal">&times;</span>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">⚙️ Settings</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Notification Sound</label>
+                    <select class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option>Chime</option>
+                        <option>Bell</option>
+                        <option>None</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Auto-break Reminders</label>
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" id="auto-break" class="custom-checkbox">
+                        <span class="text-gray-700">Enable automatic break reminders</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Dark Mode</label>
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" id="dark-mode" class="custom-checkbox">
+                        <span class="text-gray-700">Use dark theme</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex gap-3">
+                <button class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                    Save Settings
+                </button>
+                <button class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                    Reset to Default
+                </button>
+            </div>
         </div>
     </div>
 
@@ -327,6 +588,7 @@
     <script src="modal.js"></script>
     <script src="popup.js"></script>
     <script src="todo.js"></script>
+    <script src="dashboard.js"></script>
 
 </body>
 
